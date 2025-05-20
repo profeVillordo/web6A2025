@@ -70,6 +70,11 @@ print_r($datos);
         <form id="myForm" method="post" action="update.php">
             <input type="hidden" name="id" value="<?php echo $datos['id'];?>" required>
 
+            <label for="">Apellido y Nombres</label>
+            <input type="text" id="apeynom" name="apeynom" value="<?php echo $datos['apeynom']; ?>" required>
+            <label for="dni">DNI:</label>
+            <input type="number" id="dni" name="dni" value="<?php echo $datos['dni']; ?>" required>
+            
             <label for="genero">Genero:</label>
             <select id="genero" name="genero">
                 <option value="1" <?php if($datos['genero'] == '1') echo 'selected'; ?>>Masculino</option>
