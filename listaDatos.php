@@ -97,7 +97,7 @@ mysqli_close($conexion);
                 }
                 ?>
                 <tr><td><?php echo $fila['apeynom'];?></td><td><?php echo $fila['dni'];?></td>
-                <td><?= $gen;?></td><td><?= $fila['domicilio'];?></td><td><?= $fila['fecha_nac'];?></td><td><a href="editar.php?id=<?= $fila['id'];?>"><button id=editar type="button">Editar</button></a></td><td><button id=eliminar type="button">Eliminar</button></td></tr>
+                <td><?= $gen;?></td><td><?= $fila['domicilio'];?></td><td><?= $fila['fecha_nac'];?></td><td><a href="editar.php?id=<?= $fila['id'];?>"><button id=editar type="button">Editar</button></a></td><td><button id="eliminar" onclick="elim(<?= $fila['id'];?>, '<?= $fila['apeynom'];?>')" type="button">Eliminar</button></td></tr>
             <?php
 
             }
@@ -108,3 +108,16 @@ mysqli_close($conexion);
     </section>
 </body>
 </html>
+<script>
+    function elim(id, apeynom){
+        
+        var mensaje;
+        var opcion= confirm("¿Está seguro que desea eliminar a "+apeynom+"?");
+        if (opcion==true) {
+            mensaje= "Eliminado";
+            window.location="eliminar.php?id="+id;
+        }else{
+            mensaje= "No se ha eliminado";
+        }
+    }
+</script>
