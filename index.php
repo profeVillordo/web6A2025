@@ -8,14 +8,26 @@ if(!$conexion){
 
 mysqli_select_db($conexion,"negocio");
 $peticion=mysqli_query($conexion, "SELECT * FROM productos");
-
+$categorias=mysqli_query($conexion, "SELECT * FROM categorias");
 mysqli_close($conexion);
 
 //print_r($peticion);
 
 
 
+session_start();
+if (!isset($_SESSION['carrito'])) {
+    $_SESSION['carrito'] = [];
+}
 
+
+function contar_total_items() {
+    $total = 0;
+    foreach ($_SESSION['carrito'] as $item) {
+        $total += $item['cantidad'];
+    }
+    return $total;
+}
 
 ?>
 
@@ -49,10 +61,23 @@ mysqli_close($conexion);
 </head>
 <body>
     <div class="container-fluid py-5">
+        <select id="cat" name="cat">
+             <option value="">Seleccione categoria</option>
+             <?php
+            while($row=mysqli_fetch_array($categorias)){ ?>
+           
+            <option value="<?php echo $row['id_categoria'];?> "><?php echo $row['categoria'];?></option>
+           
+
+                <?php } ?>
+    </select>
         <section class="productos">
             <div class="container">
                 <h2 class="text-center mb-5">Nuestros Productos</h2>
-                
+                <a href="carrito.php" class="btn btn-success mb-4">
+                    Carrito <i class="bi bi-cart"></i> 
+                    <span class="badge bg-light text-success"><?php echo contar_total_items();?></span> 
+                </a>
                 <!-- Primera fila -->
               <div class="row mb-4">
                  <?php
@@ -66,9 +91,18 @@ mysqli_close($conexion);
                                 <p class="card-text">Último modelo con cámara de alta resolución y batería de larga duración. Perfecto para usuarios exigentes.</p>
                                 <div class="mt-auto">
                                     <p class="price mb-3">$599.99</p>
-                                    <button class="btn btn-primary w-100" onclick="agregarCarrito('Smartphone Premium', 599.99)">
-                                        <i class="bi bi-cart-plus"></i> Agregar al Carrito
-                                    </button>
+                                   <form method="POST" action="agregar_carrito.php">
+                                        <input type="hidden" name="id_producto" value="<?php echo $fila['id'];?>">
+                                        <input type="hidden" name="nombre" value="<?php echo $fila['nom_del_producto'];?>">
+                                        <input type="hidden" name="precio" value="<?php echo $fila['precio_unitario'];?>">
+                                        
+                                        <label for="cantidad_<?php echo $fila['id'];?>" class="form-label visually-hidden">Cantidad</label>
+                                        <input type="number" id="cantidad_<?php echo $fila['id'];?>" name="cantidad" value="1" min="1" class="form-control mb-2 text-center" required>
+                                        
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="bi bi-cart-plus"></i> Agregar al Carrito
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -92,10 +126,11 @@ mysqli_close($conexion);
         function agregarCarrito(producto, precio) {
             // Mostrar notificación de éxito
             alert(`¡${producto} agregado al carrito por $${precio}!`);
-            
+            $_SESSION['mis_producto'] += 1;
+            window.location.reload();
             // Aquí puedes agregar la lógica real para añadir al carrito
             console.log(`Producto agregado: ${producto} - Precio: $${precio}`);
         }
     </script>
 </body>
-</html>
+</html> 
