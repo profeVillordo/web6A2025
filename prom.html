@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ejercicio E — Cálculo de Promedio</title>
+  <style>
+    body{font-family:Arial, sans-serif;margin:40px;background:#f5f5f5;color:#222}
+    h1{color:#1976d2}
+    .card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);max-width:600px;margin:auto}
+    label{display:block;margin-top:10px;font-weight:600}
+    input[type="text"],input[type="number"],input[type="file"]{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;margin-top:4px}
+    button{background:#1976d2;color:#fff;border:none;padding:10px 16px;margin-top:16px;border-radius:8px;cursor:pointer}
+    button:hover{background:#125aaa}
+    #resultado{margin-top:20px;font-weight:bold}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Ejercicio: Promedio de Notas</h1>
+    <p><strong>Enunciado:</strong> Diseña un formulario desde cero que permita calcular el promedio de tres notas ingresadas por el alumno. El formulario debe incluir los siguientes campos:</p>
+    <ul>
+      <li>Nombre del alumno (texto obligatorio)</li>
+      <li>Materia (texto obligatorio)</li>
+      <li>Nota 1 (número entre 1 y 10)</li>
+      <li>Nota 2 (número entre 1 y 10)</li>
+      <li>Nota 3 (número entre 1 y 10)</li>
+     
+    </ul>
+    <p>Al presionar el botón <em>Calcular Promedio</em>, el programa debe:</p>
+    <ol>
+      <li>Validar que las notas sean números válidos entre 1 y 10.</li>
+      <li>Calcular el promedio con dos decimales.</li>
+      <li>Mostrar el promedio en pantalla.</li>
+      <li>Indicar si el alumno está <strong>aprobado</strong> (promedio ≥ 7) o <strong>desaprobado</strong> (promedio &lt; 6).</li>
+    </ol>
+    <p>El resultado debe mostrarse debajo del formulario sin usar ventanas emergentes (<code>alert</code>).</p>
+
+    <form id="formPromedio">
+      <label for="nombre">Nombre del alumno</label>
+      <input type="text" id="nombre" required>
+
+      <label for="materia">Materia</label>
+      <input type="text" id="materia" required>
+
+      <label for="nota1">Nota 1</label>
+      <input type="number" id="nota1" min="1" max="10" required>
+
+      <label for="nota2">Nota 2</label>
+      <input type="number" id="nota2" min="1" max="10" required>
+
+      <label for="nota3">Nota 3</label>
+      <input type="number" id="nota3" min="1" max="10" required>
+
+     
+
+      <button type="submit">Calcular Promedio</button>
+    </form>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    document.getElementById('formPromedio').addEventListener('submit', function(event){
+      event.preventDefault();
+
+      const n1=parseFloat(document.getElementById('nota1').value);
+      const n2=parseFloat(document.getElementById('nota2').value);
+      const n3=parseFloat(document.getElementById('nota3').value);
+      //const archivo=document.getElementById('archivo').files[0];
+      const resultado=document.getElementById('resultado');
+
+      /*if(!archivo){
+        resultado.innerHTML='<span style="color:red">Debe adjuntar un archivo.</span>';
+        return;
+      }*/
+
+      if([n1,n2,n3].some(n => isNaN(n) || n<1 || n>10)){
+        resultado.innerHTML='<span style="color:red">Las notas deben ser números entre 1 y 10.</span>';
+        return;
+      }
+
+      const promedio=((n1+n2+n3)/3).toFixed(2);
+      const estado=promedio>=7? 'Aprobado ✅':'Desaprobado ❌';
+
+      resultado.innerHTML=`Promedio: <strong>${promedio}</strong> — Estado: <strong>${estado}</strong>`;
+    });
+  </script>
+</body>
+</html>
